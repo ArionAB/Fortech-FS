@@ -18,6 +18,26 @@
   a {
     text-decoration: none;
   }
+
+  .table-student {
+    display: flex;
+    position: relative;
+
+    .delete-student {
+      position: absolute;
+      cursor: pointer;
+      right: 31%;
+      top: 20%;
+    }
+
+    .edit-student {
+      position: absolute;
+      cursor: pointer;
+      right: 34%;
+      top: 22%;
+    }
+  }
+
   .student {
     display: flex;
     justify-content: center;

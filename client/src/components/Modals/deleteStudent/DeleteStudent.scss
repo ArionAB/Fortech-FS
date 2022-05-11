@@ -1,0 +1,37 @@
+@import "../../../styles.scss";
+.delete-modal {
+  position: absolute;
+  right: -3%;
+  background-color: beige;
+  height: 10rem;
+  box-shadow: var(--box-shadow);
+  width: 20rem;
+  z-index: 4;
+
+  p {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .Delete-yes-no {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+
+    :nth-child(1) {
+      color: white;
+      padding: 0.7rem 1.4rem;
+      background-color: rgb(206, 61, 61);
+      border: none;
+      cursor: pointer;
+    }
+
+    :nth-child(2) {
+      color: var(--medium);
+      border: 1px solid var(--medium);
+      background-color: white;
+      padding: 0.7rem 1.4rem;
+      cursor: pointer;
+    }
+  }
+}

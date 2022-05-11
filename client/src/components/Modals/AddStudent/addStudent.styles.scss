@@ -9,6 +9,7 @@
   background-color: var(--white);
   box-shadow: var(--box-shadow);
   border: 2px solid var(--mustard);
+  z-index: 5;
 
   .add-student-title {
     display: flex;
