@@ -1,0 +1,33 @@
+@import "../../styles.scss";
+
+.table {
+  display: flex;
+  flex-direction: column;
+
+  .table-headings {
+    display: flex;
+    width: 70%;
+    border-bottom: 1px solid var(--medium);
+    padding: 0;
+    li {
+      list-style-type: none;
+      font-size: 1.4rem;
+      width: 33%;
+    }
+  }
+  a {
+    text-decoration: none;
+  }
+  .student {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--dark);
+    width: 70%;
+    height: 2.5rem;
+
+    p {
+      width: 33.33%;
+    }
+  }
+}

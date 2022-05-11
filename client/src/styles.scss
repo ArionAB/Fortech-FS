@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+:root {
+  --background: #f7f7f6;
+  --dark: #2a646e;
+  --medium: #3b7f89;
+  --mustard: #d7daba;
+  --white: #fff;
+  --border-radius: 25px;
+  --box-shadow: 11px 14px 16px -6px rgb(0 0 0 / 7%);
+  --transit: 0.6s ease;
+}
+
+body {
+  background-color: #f7f7f6;
+  margin: auto 20rem;
+}
+
+h1 {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}

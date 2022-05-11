@@ -1,0 +1,28 @@
+@import "../../styles.scss";
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+  border-bottom: 1px solid var(--dark);
+  .Logo {
+    width: 60px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .navbar {
+    width: 20rem;
+
+    ul {
+      display: flex;
+      justify-content: space-between;
+    }
+    li {
+      list-style-type: none;
+    }
+  }
+}
