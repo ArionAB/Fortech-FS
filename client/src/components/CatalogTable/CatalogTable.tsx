@@ -1,19 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CatalogTable.scss";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { url } from "../shared";
 
-const CatalogTable = () => {
-  interface IStudents {
-    name: string;
-    lastName: string;
-    class: number;
-    id: number;
-  }
-  const students: IStudents[] = [
-    { name: "Gabriel", lastName: "Popescu", class: 9, id: 1 },
-    { name: "Razvan", id: 2, lastName: "Popa", class: 10 },
-    { name: "Cipri", id: 3, lastName: "Radu", class: 11 },
-  ];
+const CatalogTable = ({ updateData }: { updateData: () => void }) => {
+  const [students, setStudents] = useState([]);
+
+  const getStudents = () => {
+    axios
+      .get(`${url}/catalog/read`)
+      .then((res) => {
+        console.log(res);
+        setStudents(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getStudents();
+  }, [updateData]);
+
+  useEffect(() => {
+    getStudents();
+  }, []);
+
   return (
     <div className="table">
       <ul className="table-headings">
@@ -21,21 +34,21 @@ const CatalogTable = () => {
         <li>Last Name</li>
         <li>Class</li>
       </ul>
-      {students.map((student: any, index: number) => {
+      {students?.map((student: any, index: number) => {
         return (
           <Link
-            to={`/catalog/${student.id}`}
+            to={`/catalog/${student.__v}`}
             className="student"
-            key={student.id}
+            key={student._id}
             style={
               index % 2
                 ? { backgroundColor: "transparent" }
                 : { backgroundColor: "#e3e3e3" }
             }
           >
+            <p>{student.firstName}</p>
             <p>{student.lastName}</p>
-            <p>{student.name}</p>
-            <p>{student.class}</p>
+            <p>{student.grade}</p>
           </Link>
         );
       })}

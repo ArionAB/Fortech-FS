@@ -5,16 +5,18 @@
   top: 20px;
   right: 0;
   width: 20rem;
-  height: 15rem;
+  height: 20rem;
   background-color: var(--white);
   box-shadow: var(--box-shadow);
   border: 2px solid var(--mustard);
 
   .add-student-title {
     display: flex;
-    align-content: center;
-    justify-content: center;
+    justify-content: space-between;
 
+    .add-title {
+      margin: 0 auto;
+    }
     .add-student-close {
       cursor: pointer;
     }
@@ -25,13 +27,22 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 3rem;
+    padding-top: 0.5rem;
 
     width: 80%;
     margin: 0 auto;
     label {
       display: flex;
       flex-direction: column;
+
+      p {
+        padding: 5px 0;
+      }
+    }
+
+    select {
+      width: 100%;
+      height: 2rem;
     }
 
     .add-title {
@@ -45,6 +56,7 @@
     }
     .add-submit {
       float: right;
+      margin-top: 1rem;
     }
   }
 }

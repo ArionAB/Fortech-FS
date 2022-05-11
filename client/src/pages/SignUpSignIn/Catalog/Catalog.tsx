@@ -6,9 +6,14 @@ import "./catalog.styles.scss";
 
 const Catalog = () => {
   const [show, setShow] = useState<boolean>(false);
+  const [updateCatalog, setUpdateCatalog] = useState<boolean>(false);
 
   const closeModal = () => {
     setShow(false);
+  };
+
+  const updateData = () => {
+    setUpdateCatalog(true);
   };
 
   return (
@@ -18,9 +23,13 @@ const Catalog = () => {
         <div className="title">
           <h1 className="catalog-title">Catalog</h1>
           <button onClick={() => setShow(true)}>Add student</button>
-          {show ? <AddStudent handleClose={closeModal} /> : ""}
+          {show ? (
+            <AddStudent handleClose={closeModal} updateData={updateData} />
+          ) : (
+            ""
+          )}
         </div>
-        <CatalogTable />
+        <CatalogTable updateData={updateData} />
       </main>
     </>
   );

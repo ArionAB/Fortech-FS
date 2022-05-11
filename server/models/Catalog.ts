@@ -12,4 +12,4 @@ const CatalogSchema = new mong.Schema({
 });
 
 const Catalog = mong.model("CatalogData", CatalogSchema);
-module.exports = Catalog;
+export default Catalog;

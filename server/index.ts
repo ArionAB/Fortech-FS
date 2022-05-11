@@ -1,26 +1,42 @@
-const express = require("express");
-const mongoose = require("mongoose");
+import express from "express";
+import mongoose from "mongoose";
 const app = express();
-
-const CatalogModel = require("./server/models/Catalog");
+import CatalogModel from "../server/models/Catalog";
+import StudentModel from "../server/models/Student";
+import cors from "cors";
 
 const port = 5000;
 
+app.use(cors());
 app.use(express.json()); //middleware that allows us to recieve data from the frontend in json format
-app.get("/", async (req, res) => {
-  const catalog = new CatalogModel({ className: "Biology", grades: 10 });
+
+app.post("/catalog", async (req, res) => {
+  const { firstName, lastName, grade } = req.body;
+  const student = new StudentModel({
+    firstName: firstName,
+    lastName: lastName,
+    grade: grade,
+  });
   try {
-    await catalog.save();
+    await student.save();
+    res.send("Data added");
   } catch (err) {
     console.log(err);
   }
 });
 
+app.get("/catalog/read", (req, res) => {
+  StudentModel.find({}, (err: any, result: any) => {
+    if (err) {
+      res.send(err);
+    }
+    res.send(result);
+  });
+  // StudentModel.find({$where: {firstName: "orice nume"}}, ) this is to fetch certain data
+});
+
 mongoose.connect(
-  "mongodb+srv://Arion:mancare@mern.jvjq5.mongodb.net/catalog?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-  }
+  "mongodb+srv://Arion:mancare@mern.jvjq5.mongodb.net/catalog?retryWrites=true&w=majority"
 );
 
 app.listen(port, () => {
