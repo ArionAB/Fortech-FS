@@ -1,40 +1,65 @@
-import React, { useState, useEffect } from "react";
-import { ReactComponent as X } from "../../../assets/x.svg";
 import axios from "axios";
-import "./addStudent.styles.scss";
+import React, { useState, useEffect } from "react";
 import { url } from "../../shared";
 
-const AddStudent = ({
+import { ReactComponent as X } from "../../../assets/x.svg";
+
+import "./EditStudent.styles.scss";
+
+const EditStudent = ({
+  id,
+  selectedID,
+  first,
+  last,
+  clasa,
   handleClose,
   updateData,
+  isEdit,
 }: {
   handleClose: () => void;
   updateData: () => void;
+  isEdit: () => void;
+  id: string;
+  selectedID: string;
+  first: string;
+  last: string;
+  clasa: number;
 }) => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState("");
   const [grade, setGrade] = useState<number>(9);
+  const [updateStd, setUpdateStd] = useState(false);
 
-  const handleSubmit = (e: any) => {
+  useEffect(() => {
+    setFirstName(first);
+    setLastName(last);
+    setGrade(clasa);
+  }, [first, last, clasa]);
+
+  const updateStudent = (e: any) => {
     e.preventDefault();
 
     axios
-      .post(`${url}/catalog`, {
+      .put(`${url}/updateStudent`, {
+        id: selectedID,
         firstName: firstName,
         lastName: lastName,
         grade: grade,
       })
-      .then((res) => (res.data === "Data added" ? updateData() : ""));
+      .then((res) => (res.data === "updated succesfully" ? isEdit() : ""));
   };
 
   return (
-    <div className="add-student">
+    <div
+      className="add-student"
+      style={id === selectedID ? { display: "block" } : { display: "none" }}
+    >
       <div className="add-student-title">
-        <h1 className="add-title">Add a new student</h1>
+        <h1 className="add-title">{`Edit ${first} ${last}`}</h1>
         <X className="add-student-close " onClick={() => handleClose()} />
       </div>
 
-      <form onSubmit={handleSubmit} className="add-student-form">
+      <form className="add-student-form">
         <label>
           <p>First Name</p>
 
@@ -68,12 +93,19 @@ const AddStudent = ({
             <option value="12">12</option>
           </select>
         </label>
-        <button type="submit" className="add-submit">
-          Add
+        <button
+          type="button"
+          className="edit-submit"
+          onClick={(e) => {
+            handleClose();
+            updateStudent(e);
+          }}
+        >
+          Update
         </button>
       </form>
     </div>
   );
 };
 
-export default AddStudent;
+export default EditStudent;
