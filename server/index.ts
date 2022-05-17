@@ -35,6 +35,39 @@ app.get("/catalog/read", (req, res) => {
   // StudentModel.find({$where: {firstName: "orice nume"}}, ) this is to fetch certain data
 });
 
+interface IUpdateStudent {
+  firstName: string;
+  lastName: string;
+  grade: number;
+  id: string;
+  save: () => void;
+}
+
+app.put("/updateStudent", async (req, res) => {
+  const { firstName, lastName, grade, id } = req.body;
+
+  try {
+    await StudentModel.findById(
+      id,
+      (err: any, updatedStudent: IUpdateStudent) => {
+        updatedStudent.firstName = firstName;
+        updatedStudent.lastName = lastName;
+        updatedStudent.grade = grade;
+        updatedStudent.save();
+        res.send("updated succesfully");
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  await StudentModel.findByIdAndRemove(id).exec();
+  res.send("Deleted");
+});
+
 mongoose.connect(
   "mongodb+srv://Arion:mancare@mern.jvjq5.mongodb.net/catalog?retryWrites=true&w=majority"
 );
