@@ -13,11 +13,9 @@ const EditStudent = ({
   last,
   clasa,
   handleClose,
-  updateData,
   isEdit,
 }: {
   handleClose: () => void;
-  updateData: () => void;
   isEdit: () => void;
   id: string;
   selectedID: string;
@@ -28,7 +26,6 @@ const EditStudent = ({
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState("");
   const [grade, setGrade] = useState<number>(9);
-  const [updateStd, setUpdateStd] = useState(false);
 
   useEffect(() => {
     setFirstName(first);

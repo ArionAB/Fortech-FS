@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import SignUpSignIn from "./pages/SignUpSignIn/SignUpSignIn";
-import Catalog from "./pages/SignUpSignIn/Catalog/Catalog";
+import Catalog from "./pages/Catalog/Catalog";
 import Student from "./pages/Student/Student";
 
 render(

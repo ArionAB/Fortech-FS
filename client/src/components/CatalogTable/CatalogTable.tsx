@@ -17,6 +17,8 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
   const [deleted, setDeleted] = useState(false);
   const [edit, setEdit] = useState(false);
 
+  const rank = localStorage.getItem("rank");
+
   const getStudents = () => {
     axios
       .get(`${url}/catalog/read`)
@@ -81,7 +83,13 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
               <p>{student.lastName}</p>
               <p>{student.grade}</p>
             </Link>
+
             <Edit
+              style={
+                rank === "profesor"
+                  ? { position: "absolute" }
+                  : { display: "none" }
+              }
               className="edit-student"
               onClick={() => {
                 setShowEdit(true);
@@ -89,6 +97,11 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
               }}
             />
             <Delete
+              style={
+                rank === "profesor"
+                  ? { position: "absolute" }
+                  : { display: "none" }
+              }
               className="delete-student"
               onClick={() => {
                 setSelectedForDelete(student._id);
@@ -110,7 +123,6 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
             )}
             {showEdit && (
               <EditStudent
-                updateData={getStudents}
                 handleClose={CloseEditModal}
                 id={student._id}
                 selectedID={selectedForEdit}

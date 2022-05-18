@@ -3,7 +3,10 @@ import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
 import "./header.styles.scss";
 
-export const Header = (props: any) => {
+export const Header = () => {
+  const rank = localStorage.getItem("rank");
+  const email = localStorage.getItem("email");
+
   return (
     <main className="header">
       <Link to="/">
@@ -12,7 +15,7 @@ export const Header = (props: any) => {
       <nav className="navbar">
         <ul>
           <Link to="/register">
-            <li>Register</li>
+            <li>{`Welcome, ${email}`}</li>
           </Link>
           <Link to="/catalog">
             <li>Catalog</li>
