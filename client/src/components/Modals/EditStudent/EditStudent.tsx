@@ -1,8 +1,6 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { url } from "../../shared";
-
 import { ReactComponent as X } from "../../../assets/x.svg";
+import { useEditStudent } from "../../hooks/useEditStudent";
 
 import "./EditStudent.styles.scss";
 
@@ -27,23 +25,30 @@ const EditStudent = ({
   const [lastName, setLastName] = useState("");
   const [grade, setGrade] = useState<number>(9);
 
+  const { isLoading, isError, EditStudent } = useEditStudent(isEdit);
+
   useEffect(() => {
     setFirstName(first);
     setLastName(last);
     setGrade(clasa);
   }, [first, last, clasa]);
 
-  const updateStudent = (e: any) => {
+  const updateStudent = async (e: any) => {
     e.preventDefault();
-
-    axios
+    await EditStudent({
+      id: selectedID,
+      firstName,
+      lastName,
+      grade,
+    });
+    /*  axios
       .put(`${url}/updateStudent`, {
         id: selectedID,
         firstName: firstName,
         lastName: lastName,
         grade: grade,
       })
-      .then((res) => (res.data === "updated succesfully" ? isEdit() : ""));
+      .then((res) => (res.data === "updated succesfully" ? isEdit() : "")); */
   };
 
   return (

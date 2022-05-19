@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ReactComponent as X } from "../../../assets/x.svg";
-import axios from "axios";
+import { useCreateStudent } from "../../hooks/useCreateStudent";
+
 import "./addStudent.styles.scss";
-import { url } from "../../shared";
 
 const AddStudent = ({
   handleClose,
@@ -12,19 +12,27 @@ const AddStudent = ({
   updateData: () => void;
 }) => {
   const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState("");
+  const [lastName, setLastName] = useState<string>("");
   const [grade, setGrade] = useState<number>(9);
 
-  const handleSubmit = (e: any) => {
+  const { isError, isLoading, CreateStudent } = useCreateStudent(updateData);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    axios
+    await CreateStudent({
+      firstName,
+      lastName,
+      grade,
+    });
+
+    /*     axios
       .post(`${url}/catalog`, {
         firstName: firstName,
         lastName: lastName,
         grade: grade,
       })
-      .then((res) => (res.data === "Data added" ? updateData() : ""));
+      .then((res) => (res.data === "Data added" ? updateData() : "")); */
   };
 
   return (

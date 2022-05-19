@@ -41,7 +41,7 @@ const Login = () => {
         if (res.data.status === 200) {
           localStorage.setItem("rank", res.data.user.rank);
           localStorage.setItem("email", res.data.user.email);
-          // navigate("/catalog");
+          navigate("/catalog");
         }
       })
 
@@ -59,9 +59,9 @@ const Login = () => {
       .then((res) => {
         console.log(res);
         if (res.data.status === 200) {
-          setJwtToken(res.data.user);
-          // localStorage.setItem("rank", res.data.user.rank);
-          // localStorage.setItem("email", res.data.user.email);
+          // setJwtToken(res.data.user);
+          localStorage.setItem("rank", res.data.user.rank);
+          localStorage.setItem("email", res.data.user.email);
           navigate("/catalog");
         }
       })

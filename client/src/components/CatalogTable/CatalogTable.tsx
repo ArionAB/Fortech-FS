@@ -1,56 +1,46 @@
 import React, { useEffect, useState } from "react";
 import "./CatalogTable.scss";
 import { Link } from "react-router-dom";
-import axios from "axios";
+
 import { url } from "../shared";
 import { ReactComponent as Delete } from "../../assets/trash.svg";
 import { ReactComponent as Edit } from "../../assets/edit.svg";
 import DeleteStudent from "../Modals/deleteStudent/DeleteStudent";
 import EditStudent from "../Modals/EditStudent/EditStudent";
+import { useGetStudents } from "../hooks/useGetStudents";
 
 const CatalogTable = ({ updateData }: { updateData: () => void }) => {
-  const [students, setStudents] = useState([]);
   const [selectedForDelete, setSelectedForDelete] = useState("");
   const [selectedForEdit, setSelectedForEdit] = useState("");
-  const [show, setShow] = useState<boolean>(false);
+  const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [edit, setEdit] = useState(false);
 
   const rank = localStorage.getItem("rank");
 
-  const getStudents = () => {
-    axios
-      .get(`${url}/catalog/read`)
-      .then((res) => {
-        setStudents(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const { isLoading, isError, students } = useGetStudents(
+    updateData,
+    edit,
+    deleted
+  );
 
-  useEffect(() => {
-    getStudents();
-  }, [updateData]);
+  const isDeleted = () => setDeleted(true);
 
-  useEffect(() => {
-    getStudents();
-  }, []);
-
-  useEffect(() => {
-    if (edit) {
-      getStudents();
-    } else return;
-  }, [edit]);
-
+  //we have to set delete to false otherwise on the second delete
+  // we have to refresh because deleted is already true
   useEffect(() => {
     if (deleted) {
-      getStudents();
+      setDeleted(false);
     } else return;
   }, [deleted]);
 
-  const isDeleted = () => setDeleted(true);
+  //same like for delete
+  useEffect(() => {
+    if (edit) {
+      setEdit(false);
+    } else return;
+  }, [edit]);
 
   const isEdited = () => setEdit(true);
 
