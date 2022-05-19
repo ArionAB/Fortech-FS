@@ -29,14 +29,13 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  const { email, password, rank } = req.body;
+  const { email, password } = req.body;
   const user = await User.findOne({
     email: email,
     password: password,
-    rank: rank,
   });
 
-  if (user) {
+  /*   if (user) {
     const token = jwt.sign(
       {
         email: email,
@@ -44,11 +43,8 @@ app.post("/login", async (req, res) => {
       },
       "randomString123"
     );
-
-    return res.send({ status: 200, user: token });
-  } else {
-    return res.send({ status: 400, user: false });
-  }
+ */
+  res.send({ status: 200, user: user });
 });
 
 //Create
