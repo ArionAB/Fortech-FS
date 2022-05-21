@@ -5,6 +5,7 @@ import StudentModel from "../server/models/Student";
 import User from "./models/User";
 import cors from "cors";
 import jwt from "jsonwebtoken";
+import { type } from "os";
 
 const port = 5000;
 const app = express();
@@ -24,16 +25,24 @@ app.post("/register", async (req, res) => {
     });
     res.send({ user, status: 200 });
   } catch (err) {
-    res.send({ status: 400, error: "Duplicate email" });
+    res.send({ status: 400, error: "Email already exists" });
   }
 });
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({
-    email: email,
-    password: password,
-  });
+
+  try {
+    const user = await User.findOne({
+      email: email,
+      password: password,
+    });
+    if (user) {
+      res.send({ status: 200, user: user });
+    } else res.send({ status: 400, err: "Incorrect email or password" });
+  } catch (err) {
+    res.send({ status: 400, user: err });
+  }
 
   /*   if (user) {
     const token = jwt.sign(
@@ -44,7 +53,6 @@ app.post("/login", async (req, res) => {
       "randomString123"
     );
  */
-  res.send({ status: 200, user: user });
 });
 
 //Create
@@ -79,30 +87,28 @@ app.post("/catalog", async (req, res) => {
 }); */
 
 app.post("/catalog/read", async (req, res) => {
-  const query = req.body.search;
-  console.log(req.body);
+  const { clasa, search } = req.body;
+
   let catalog = await StudentModel.find({});
   let students: any[] = [];
+
   catalog.map((stud: any) => {
-    const filteredStudents = stud.firstName.includes(query);
-    if (filteredStudents) {
+    const filteredStudents = stud.firstName.includes(search);
+    const filterClass = stud.grade === Number(clasa);
+
+    if (clasa && search) {
+      console.log(filterClass);
+      if (filteredStudents && filterClass) {
+        students.push(stud);
+      }
+    } else if (filteredStudents) {
       students.push(stud);
     }
   });
-  if (query) {
+  if (search) {
     res.status(200).send(students);
   } else res.status(200).send(catalog);
 });
-
-/* app.get("/catalog/read", (req, res) => {
-  StudentModel.find({}, (err: any, result: any) => {
-    if (err) {
-      res.send(err);
-    }
-    res.status(200).send({ msg: "Catalog fetched", data: result });
-  });
-  // StudentModel.find({$where: {firstName: "orice nume"}}, ) this is to fetch certain data
-}); */
 
 interface IUpdateStudent {
   firstName: string;
