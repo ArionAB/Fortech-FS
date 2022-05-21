@@ -63,15 +63,46 @@ app.post("/catalog", async (req, res) => {
   }
 });
 //Read
-app.get("/catalog/read", (req, res) => {
+/* app.post("/catalog/search", (req, res) => {
+  console.log("*******", req.body.search.text);
+  StudentModel.find(
+    { firstName: req.body.search.text.trim() },
+    (err: any, result: any) => {
+      //trim()to remove extra space from beggining and end
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).send(result);
+    }
+  );
+  // StudentModel.find({$where: {firstName: "orice nume"}}, ) this is to fetch certain data
+}); */
+
+app.post("/catalog/read", async (req, res) => {
+  const query = req.body.search;
+  console.log(req.body);
+  let catalog = await StudentModel.find({});
+  let students: any[] = [];
+  catalog.map((stud: any) => {
+    const filteredStudents = stud.firstName.includes(query);
+    if (filteredStudents) {
+      students.push(stud);
+    }
+  });
+  if (query) {
+    res.status(200).send(students);
+  } else res.status(200).send(catalog);
+});
+
+/* app.get("/catalog/read", (req, res) => {
   StudentModel.find({}, (err: any, result: any) => {
     if (err) {
       res.send(err);
     }
-    res.send(result);
+    res.status(200).send({ msg: "Catalog fetched", data: result });
   });
   // StudentModel.find({$where: {firstName: "orice nume"}}, ) this is to fetch certain data
-});
+}); */
 
 interface IUpdateStudent {
   firstName: string;
