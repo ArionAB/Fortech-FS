@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { IStudent } from "../types/getStudents";
 import { getStudents } from "../service/studentService";
 
-export const useGetStudents = (
+export const UseGetStudents = (
   updateData: () => void,
   edit: boolean,
   deleted: boolean

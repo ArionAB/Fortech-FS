@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { url } from "../../shared";
+
 import { useDeleteStudent } from "../../hooks/useDeleteStudent";
 
 import "./DeleteStudent.scss";

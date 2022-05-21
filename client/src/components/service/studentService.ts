@@ -9,7 +9,9 @@ const axiosInstance = axios.create({
 });
 
 export const getStudents = async () => {
-  const { data } = await axiosInstance.get<IStudent[]>("/catalog/read");
+  const { data } = await axiosInstance.post<IStudent[]>("/catalog/read", {
+    search: "",
+  });
   return data;
 };
 

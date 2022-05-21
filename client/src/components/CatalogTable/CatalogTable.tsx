@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./CatalogTable.scss";
 import { Link } from "react-router-dom";
-
-import { url } from "../shared";
 import { ReactComponent as Delete } from "../../assets/trash.svg";
 import { ReactComponent as Edit } from "../../assets/edit.svg";
 import DeleteStudent from "../Modals/deleteStudent/DeleteStudent";
 import EditStudent from "../Modals/EditStudent/EditStudent";
-import { useGetStudents } from "../hooks/useGetStudents";
+import { UseGetStudents } from "../hooks/useGetStudents";
+
+import "./CatalogTable.scss";
 
 const CatalogTable = ({ updateData }: { updateData: () => void }) => {
   const [selectedForDelete, setSelectedForDelete] = useState("");
@@ -19,12 +18,12 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
 
   const rank = localStorage.getItem("rank");
 
-  const { isLoading, isError, students } = useGetStudents(
+  const { isLoading, isError, students } = UseGetStudents(
     updateData,
     edit,
     deleted
   );
-
+  console.log(students);
   const isDeleted = () => setDeleted(true);
 
   //we have to set delete to false otherwise on the second delete

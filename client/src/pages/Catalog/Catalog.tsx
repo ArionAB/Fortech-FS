@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext, createContext } from "react";
 import CatalogTable from "../../components/CatalogTable/CatalogTable";
+import Search from "../../components/Filters/Search/Search";
 import { Header } from "../../components/header/header";
 import AddStudent from "../../components/Modals/AddStudent/addStudent";
+import { Context } from "../../components/Filters/Search/Search";
 import "./catalog.styles.scss";
 
-const Catalog = () => {
+const Catalog = (props: any) => {
+  console.log(props);
   const [show, setShow] = useState<boolean>(false);
   const [updateCatalog, setUpdateCatalog] = useState<boolean>(false);
 
@@ -14,16 +17,23 @@ const Catalog = () => {
     setShow(false);
   };
 
+  const getSearchValue = (val: string) => {
+    console.log(val);
+  };
+
   const updateData = () => {
     setUpdateCatalog(true);
   };
 
+  const value = useContext(Context);
+  console.log(value);
   return (
     <>
       <Header />
       <main className="catalog">
         <div className="title">
           <h1 className="catalog-title">Catalog</h1>
+
           {rank === "profesor" ? (
             <button onClick={() => setShow(true)}>Add student</button>
           ) : (
@@ -35,6 +45,9 @@ const Catalog = () => {
           ) : (
             ""
           )}
+        </div>
+        <div className="filter-section">
+          {/* <Search value={getSearchValue}/> */}
         </div>
         <CatalogTable updateData={updateData} />
       </main>
