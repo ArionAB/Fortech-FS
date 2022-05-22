@@ -64,7 +64,7 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
       setEdit(false);
     } else return;
   }, [edit]);
-  console.log(sortedStudents);
+
   const isEdited = () => setEdit(true);
 
   const CloseDelete = () => setShow(false);

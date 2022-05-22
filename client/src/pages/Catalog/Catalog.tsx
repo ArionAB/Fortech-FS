@@ -17,9 +17,6 @@ const Catalog = (props: any) => {
   const rank = localStorage.getItem("rank");
   const email = localStorage.getItem("email");
 
-  const test = useContext(ClasaContext);
-  console.log(test);
-
   useEffect(() => {
     if (!email) {
       alert("You need to be logged in to acces this data!");

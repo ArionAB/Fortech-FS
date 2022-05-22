@@ -1,0 +1,52 @@
+@import "../../styles.scss";
+.table {
+  position: relative;
+}
+.each-class {
+  display: flex;
+  align-items: center;
+
+  height: 2rem;
+
+  .class-add {
+    display: flex;
+    width: 22.5%;
+
+    h3 {
+      width: 10rem;
+    }
+  }
+
+  .each-grade {
+    padding: 5px;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+  }
+
+  label {
+    input {
+      width: 2rem;
+    }
+  }
+
+  button {
+    margin-left: 3rem;
+  }
+}
+
+.average {
+  position: absolute;
+  right: 50%;
+  top: 30px;
+
+  p {
+    height: 2rem;
+    font-size: 1.2rem;
+  }
+}
+.add-grade {
+  width: 25px;
+  cursor: pointer;
+  padding-left: 0.5rem;
+}
