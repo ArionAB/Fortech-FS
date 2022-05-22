@@ -1,4 +1,29 @@
 @import "../../../styles.scss";
 
-.search-label {
+.search-container {
+  display: flex;
+  gap: 2rem;
+  width: 70%;
+  margin-bottom: 2rem;
+
+  label {
+    border: none !important;
+  }
+
+  .search-label {
+    width: 100%;
+    max-width: 25rem;
+    height: 2rem;
+    border: 2px solid var(--dark);
+    option {
+      font-size: 1rem;
+    }
+
+    input {
+      width: 100%;
+      height: 2rem;
+      border: 2px solid var(--dark);
+      padding-left: 0.5rem;
+    }
+  }
 }

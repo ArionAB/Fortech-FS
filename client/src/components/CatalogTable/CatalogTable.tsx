@@ -47,7 +47,7 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
     if (!sort.sortVal) {
       setSortedStudents(students);
     }
-  }, [sort]);
+  }, [sort, students]);
 
   const isDeleted = () => setDeleted(true);
   //we have to set delete to false otherwise on the second delete
@@ -64,7 +64,7 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
       setEdit(false);
     } else return;
   }, [edit]);
-
+  console.log(sortedStudents);
   const isEdited = () => setEdit(true);
 
   const CloseDelete = () => setShow(false);

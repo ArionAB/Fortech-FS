@@ -5,7 +5,7 @@ import StudentModel from "../server/models/Student";
 import User from "./models/User";
 import cors from "cors";
 import jwt from "jsonwebtoken";
-import { type } from "os";
+import Catalog from "../server/models/Catalog";
 
 const port = 5000;
 const app = express();
@@ -55,6 +55,37 @@ app.post("/login", async (req, res) => {
  */
 });
 
+app.post("/grades", async (req, res) => {
+  const { userID, className, grades } = req.body;
+
+  try {
+    const marks = await CatalogModel.create({
+      userID: userID,
+      className: className,
+      grades: grades,
+    });
+    res.send({ marks, status: 200 });
+  } catch (err) {
+    res.send({ status: 400, error: err });
+  }
+});
+
+app.post("/grades/get", async (req, res) => {
+  const { id } = req.body;
+  let catalog = await CatalogModel.find({});
+  let grades: string[] = [];
+
+  catalog.map((stud: any) => {
+    const filterById = stud.userID === id;
+    if (filterById) {
+      grades.push(stud);
+    }
+  });
+  if (id) {
+    res.status(200).send(grades);
+  } else res.status(200).send("Nothing to fetch");
+});
+
 //Create
 app.post("/catalog", async (req, res) => {
   const { firstName, lastName, grade } = req.body;
@@ -70,22 +101,22 @@ app.post("/catalog", async (req, res) => {
     console.log(err);
   }
 });
-//Read
-/* app.post("/catalog/search", (req, res) => {
-  console.log("*******", req.body.search.text);
-  StudentModel.find(
-    { firstName: req.body.search.text.trim() },
-    (err: any, result: any) => {
-      //trim()to remove extra space from beggining and end
-      if (err) {
-        res.status(500).send(err);
-      }
-      res.status(200).send(result);
-    }
-  );
-  // StudentModel.find({$where: {firstName: "orice nume"}}, ) this is to fetch certain data
+/* app.post("/catalog", async (req, res) => {
+  const { firstName, lastName, grade } = req.body;
+  const student = new StudentModel({
+    firstName: firstName,
+    lastName: lastName,
+    grade: grade,
+  });
+  try {
+    await student.save();
+    res.send("Data added");
+  } catch (err) {
+    console.log(err);
+  }
 }); */
 
+//Read
 app.post("/catalog/read", async (req, res) => {
   const { clasa, search } = req.body;
 
@@ -93,19 +124,26 @@ app.post("/catalog/read", async (req, res) => {
   let students: any[] = [];
 
   catalog.map((stud: any) => {
-    const filteredStudents = stud.firstName.includes(search);
+    const filteredStudents = stud.firstName.includes(
+      search.charAt(0).toUpperCase() + search.slice(1)
+    );
     const filterClass = stud.grade === Number(clasa);
 
     if (clasa && search) {
-      console.log(filterClass);
       if (filteredStudents && filterClass) {
         students.push(stud);
+      }
+    }
+    if (clasa && !search) {
+      if (filterClass) {
+        students.push(stud);
+        return;
       }
     } else if (filteredStudents) {
       students.push(stud);
     }
   });
-  if (search) {
+  if (search || (search && clasa) || (!search && clasa)) {
     res.status(200).send(students);
   } else res.status(200).send(catalog);
 });
@@ -128,6 +166,7 @@ app.put("/updateStudent", async (req, res) => {
         updatedStudent.firstName = firstName;
         updatedStudent.lastName = lastName;
         updatedStudent.grade = grade;
+
         updatedStudent.save();
         res.send("updated succesfully");
       }

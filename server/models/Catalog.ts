@@ -1,13 +1,15 @@
 const mong = require("mongoose");
 
 const CatalogSchema = new mong.Schema({
-  className: {
+  userID: {
     type: String,
     required: true,
   },
+  className: {
+    type: String,
+  },
   grades: {
-    type: Number,
-    required: true,
+    type: String,
   },
 });
 
