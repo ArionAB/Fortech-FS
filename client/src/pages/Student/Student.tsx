@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "../../components/header/header";
+
 import "./Student.scss";
 
 const classes: any = [
@@ -10,8 +12,16 @@ const classes: any = [
   "Chemistry",
   "Art",
 ];
+const localemail = localStorage.getItem("email");
 
 const Student = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localemail) {
+      alert("You need to be logged in to acces this data!");
+      navigate("/");
+    }
+  }, []);
   return (
     <>
       <Header />

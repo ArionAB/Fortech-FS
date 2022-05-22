@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { IStudent } from "../types/getStudents";
-import { getStudents } from "../service/studentService";
+import { GetStudents } from "../service/studentService";
+import { SearchContext } from "../Context/searchContext";
+import { ClasaContext } from "../Context/filterClassContext";
 
 export const UseGetStudents = (
   updateData: () => void,
@@ -11,11 +13,14 @@ export const UseGetStudents = (
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
+  const search = useContext(SearchContext);
+  const clasa = useContext(ClasaContext);
+
   const getStudentsReq = async () => {
     setIsLoading(true);
     setIsError(false);
     try {
-      const data = await getStudents();
+      const data = await GetStudents(search.searchVal, clasa.filterVal);
       setStudents(data);
     } catch (err) {
       console.error(err);
@@ -23,6 +28,10 @@ export const UseGetStudents = (
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    getStudentsReq();
+  }, [clasa.filterVal]);
 
   useEffect(() => {
     getStudentsReq();

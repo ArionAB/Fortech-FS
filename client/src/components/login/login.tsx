@@ -5,6 +5,7 @@ import jwt_decode from "jwt-decode";
 import { url } from "../shared";
 
 import "./login.styles.scss";
+import { off } from "process";
 
 const Login = () => {
   const [login, setLogin] = useState({
@@ -16,13 +17,13 @@ const Login = () => {
   });
 
   const [jwtToken, setJwtToken] = useState("");
+  const [serverError, setServerError] = useState("");
 
   const [error, setError] = useState({
     email: "",
     password: "",
     confirmPassword: "",
     admin: "",
-    rank: "",
   });
 
   const param = useLocation();
@@ -92,6 +93,9 @@ const Login = () => {
             localStorage.setItem("email", res.data.user.email);
             navigate("/catalog");
           }
+          if (res.data.status === 400) {
+            setServerError(res.data.error);
+          }
         })
 
         .catch((err) => console.error(err));
@@ -99,7 +103,6 @@ const Login = () => {
 
   const handleLogin = (e: any) => {
     e.preventDefault();
-    const { email, password } = error;
 
     let hasErrors = false;
     let newErrors = { ...error };
@@ -135,6 +138,9 @@ const Login = () => {
               localStorage.setItem("email", res.data.user.email);
               navigate("/catalog");
             }
+            if (res.data.status === 400) {
+              setServerError(res.data.err);
+            }
           })
           .catch((err) => console.error(err));
     }
@@ -142,10 +148,9 @@ const Login = () => {
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
-
     setLogin({ ...login, [name]: value });
-
     setError({ ...error, [name]: "" });
+    setServerError("");
   };
 
   return (
@@ -170,6 +175,7 @@ const Login = () => {
               name="email"
               placeholder="Email address"
               onChange={(e) => handleChange(e)}
+              value={email || ""}
             />
             {error.email && <p>{error.email}</p>}
           </label>
@@ -179,6 +185,7 @@ const Login = () => {
               type="password"
               placeholder="Password"
               onChange={(e) => handleChange(e)}
+              value={password || ""}
             />
             {error.password && <p>{error.password}</p>}
           </label>
@@ -189,6 +196,7 @@ const Login = () => {
                 name="confirmPassword"
                 placeholder="Confirm Password"
                 onChange={(e) => handleChange(e)}
+                value={confirmPassword || ""}
               />
               {error.confirmPassword && <p>{error.confirmPassword}</p>}
             </label>
@@ -198,7 +206,7 @@ const Login = () => {
           {path.includes("register") ? (
             <>
               <h3>Register as ?</h3>
-              <select onChange={(e) => handleChange(e)}>
+              <select onChange={(e) => handleChange(e)} name="rank">
                 <option value="student">--Select status--</option>
                 <option value="profesor">Profesor</option>
                 <option value="student">Student</option>
@@ -207,20 +215,21 @@ const Login = () => {
           ) : (
             ""
           )}
-          {rank === "profesor" ? (
+          {rank === "profesor" && path.includes("register") ? (
             <label>
               <input
                 type="password"
                 name="admin"
                 placeholder="Admin password"
                 onChange={(e) => handleChange(e)}
+                value={admin || ""}
               />
               {error.confirmPassword && <p>{error.confirmPassword}</p>}
             </label>
           ) : (
             ""
           )}
-
+          {serverError && <p className="serverError">{serverError}</p>}
           {path.includes("register") ? (
             <button type="submit">Register</button>
           ) : (

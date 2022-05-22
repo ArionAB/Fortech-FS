@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as Delete } from "../../assets/trash.svg";
 import { ReactComponent as Edit } from "../../assets/edit.svg";
 import DeleteStudent from "../Modals/deleteStudent/DeleteStudent";
 import EditStudent from "../Modals/EditStudent/EditStudent";
 import { UseGetStudents } from "../hooks/useGetStudents";
+import { SortContext } from "../Context/sortContext";
+import { IStudent } from "../types/getStudents";
 
 import "./CatalogTable.scss";
 
@@ -15,6 +17,7 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [sortedStudents, setSortedStudents] = useState<IStudent[]>();
 
   const rank = localStorage.getItem("rank");
 
@@ -23,9 +26,30 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
     edit,
     deleted
   );
-  console.log(students);
-  const isDeleted = () => setDeleted(true);
 
+  const sort = useContext(SortContext);
+
+  useEffect(() => {
+    if (sort.sortVal === "asc") {
+      let sort = students.sort((a: any, b: any) =>
+        a.firstName.localeCompare(b.firstName)
+      );
+
+      setSortedStudents(sort);
+    }
+
+    if (sort.sortVal === "desc") {
+      let sort = students.sort((a: any, b: any) =>
+        b.firstName.localeCompare(a.firstName)
+      );
+      setSortedStudents(sort);
+    }
+    if (!sort.sortVal) {
+      setSortedStudents(students);
+    }
+  }, [sort]);
+
+  const isDeleted = () => setDeleted(true);
   //we have to set delete to false otherwise on the second delete
   // we have to refresh because deleted is already true
   useEffect(() => {
@@ -55,7 +79,7 @@ const CatalogTable = ({ updateData }: { updateData: () => void }) => {
         <li>Class</li>
       </ul>
 
-      {students?.map((student: any, index: number) => {
+      {sortedStudents?.map((student: any, index: number) => {
         return (
           <div className="table-student" key={student._id}>
             <Link

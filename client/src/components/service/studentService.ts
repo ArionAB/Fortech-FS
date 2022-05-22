@@ -3,15 +3,19 @@ import { ICreateStudent } from "../types/createStudent";
 import { IStudent } from "../types/getStudents";
 import { IStudentDelete } from "../types/deleteStudent";
 import { IEditStudent } from "../types/editStudent";
+import { GlobalContent } from "../Context/searchContext";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:5000",
 });
 
-export const getStudents = async () => {
+export const GetStudents = async (search: string, clasa: string) => {
+  console.log(clasa);
   const { data } = await axiosInstance.post<IStudent[]>("/catalog/read", {
-    search: "",
+    search: search,
+    clasa: clasa,
   });
+
   return data;
 };
 
